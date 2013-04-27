@@ -41,21 +41,21 @@ namespace SendInputSharp
 
         private static readonly List<Tuple<Keys, SCANCODE>> KeyCodePairList = new List<Tuple<Keys, SCANCODE>>
         {
-            new Tuple<Keys, SCANCODE>(Keys.Up, SCANCODE.DIK_UP), 
-            new Tuple<Keys, SCANCODE>(Keys.Down, SCANCODE.DIK_DOWN), 
-            new Tuple<Keys, SCANCODE>(Keys.Left, SCANCODE.DIK_LEFT), 
-            new Tuple<Keys, SCANCODE>(Keys.Right, SCANCODE.DIK_RIGHT), 
-            new Tuple<Keys, SCANCODE>(Keys.Insert, SCANCODE.DIK_INSERT), 
-            new Tuple<Keys, SCANCODE>(Keys.Home, SCANCODE.DIK_HOME), 
-            new Tuple<Keys, SCANCODE>(Keys.Prior, SCANCODE.DIK_PRIOR),
-            new Tuple<Keys, SCANCODE>(Keys.Delete, SCANCODE.DIK_DELETE), 
-            new Tuple<Keys, SCANCODE>(Keys.End, SCANCODE.DIK_END), 
-            new Tuple<Keys, SCANCODE>(Keys.Next, SCANCODE.DIK_NEXT),
-            new Tuple<Keys, SCANCODE>(Keys.LMenu, SCANCODE.DIK_LMENU), 
-            new Tuple<Keys, SCANCODE>(Keys.RMenu, SCANCODE.DIK_RMENU), 
-            new Tuple<Keys, SCANCODE>(Keys.LControlKey, SCANCODE.DIK_LCONTROL), 
-            new Tuple<Keys, SCANCODE>(Keys.RControlKey, SCANCODE.DIK_RCONTROL),
-            new Tuple<Keys, SCANCODE>(Keys.Divide, SCANCODE.DIK_DIVIDE)
+            new Tuple<Keys, SCANCODE>(Keys.Up, SCANCODE.Up), 
+            new Tuple<Keys, SCANCODE>(Keys.Down, SCANCODE.Down), 
+            new Tuple<Keys, SCANCODE>(Keys.Left, SCANCODE.Left), 
+            new Tuple<Keys, SCANCODE>(Keys.Right, SCANCODE.Right), 
+            new Tuple<Keys, SCANCODE>(Keys.Insert, SCANCODE.Insert), 
+            new Tuple<Keys, SCANCODE>(Keys.Home, SCANCODE.Home), 
+            new Tuple<Keys, SCANCODE>(Keys.Prior, SCANCODE.Prior),
+            new Tuple<Keys, SCANCODE>(Keys.Delete, SCANCODE.Delete), 
+            new Tuple<Keys, SCANCODE>(Keys.End, SCANCODE.End), 
+            new Tuple<Keys, SCANCODE>(Keys.Next, SCANCODE.Next),
+            new Tuple<Keys, SCANCODE>(Keys.LMenu, SCANCODE.LeftMenu), 
+            new Tuple<Keys, SCANCODE>(Keys.RMenu, SCANCODE.RightMenu), 
+            new Tuple<Keys, SCANCODE>(Keys.LControlKey, SCANCODE.LeftControl), 
+            new Tuple<Keys, SCANCODE>(Keys.RControlKey, SCANCODE.RightControl),
+            new Tuple<Keys, SCANCODE>(Keys.Divide, SCANCODE.Divide)
         };
 
         private static SCANCODE VirtualToScan(Keys code) 
@@ -79,7 +79,7 @@ namespace SendInputSharp
         }
 
         /// <summary>
-        /// イベントを順にキーボード入力ストリームに挿入します。イベントは仮想キーコードと入力状態フラグのペアで指定します。
+        /// イベントを順にキーボード入力ストリームに挿入します。イベントは仮想キーコードと入力イベントフラグのペアで指定します。
         /// </summary>
         /// <param name="keyEvents">
         /// 挿入するイベントのリスト
