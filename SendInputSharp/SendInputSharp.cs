@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace SendInputSharp
 {
@@ -33,31 +34,31 @@ namespace SendInputSharp
         /// </summary>
         /// <param name="vKey">仮想キーコード</param>
         /// <returns></returns>
-        public static bool IsKeyPushedDown(VIRTUALKEYCODE vKey)
+        public static bool IsKeyPushedDown(Keys vKey)
         {
             return 0 != (GetAsyncKeyState((int)vKey) & 0x8000);
         }
 
-        private static readonly List<KeyValuePair<VIRTUALKEYCODE, SCANCODE>> KeyCodePairList = new List<KeyValuePair<VIRTUALKEYCODE,SCANCODE>>
+        private static readonly List<KeyValuePair<Keys, SCANCODE>> KeyCodePairList = new List<KeyValuePair<Keys, SCANCODE>>
         {
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_UP, SCANCODE.DIK_UP), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_DOWN, SCANCODE.DIK_DOWN), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_LEFT, SCANCODE.DIK_LEFT), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_RIGHT, SCANCODE.DIK_RIGHT), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_INSERT, SCANCODE.DIK_INSERT), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_HOME, SCANCODE.DIK_HOME), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_PRIOR, SCANCODE.DIK_PRIOR),
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_DELETE, SCANCODE.DIK_DELETE), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_END, SCANCODE.DIK_END), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_NEXT, SCANCODE.DIK_NEXT),
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_LMENU, SCANCODE.DIK_LMENU), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_RMENU, SCANCODE.DIK_RMENU), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_LCONTROL, SCANCODE.DIK_LCONTROL), 
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_RCONTROL, SCANCODE.DIK_RCONTROL),
-            new KeyValuePair<VIRTUALKEYCODE, SCANCODE>(VIRTUALKEYCODE.VK_DIVIDE, SCANCODE.DIK_DIVIDE)
+            new KeyValuePair<Keys, SCANCODE>(Keys.Up, SCANCODE.DIK_UP), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.Down, SCANCODE.DIK_DOWN), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.Left, SCANCODE.DIK_LEFT), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.Right, SCANCODE.DIK_RIGHT), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.Insert, SCANCODE.DIK_INSERT), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.Home, SCANCODE.DIK_HOME), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.Prior, SCANCODE.DIK_PRIOR),
+            new KeyValuePair<Keys, SCANCODE>(Keys.Delete, SCANCODE.DIK_DELETE), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.End, SCANCODE.DIK_END), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.Next, SCANCODE.DIK_NEXT),
+            new KeyValuePair<Keys, SCANCODE>(Keys.LMenu, SCANCODE.DIK_LMENU), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.RMenu, SCANCODE.DIK_RMENU), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.LControlKey, SCANCODE.DIK_LCONTROL), 
+            new KeyValuePair<Keys, SCANCODE>(Keys.RControlKey, SCANCODE.DIK_RCONTROL),
+            new KeyValuePair<Keys, SCANCODE>(Keys.Divide, SCANCODE.DIK_DIVIDE)
         };
 
-        private static SCANCODE VirtualToScan(VIRTUALKEYCODE code) 
+        private static SCANCODE VirtualToScan(Keys code) 
         {
             uint outKeyCode = MapVirtualKey((uint)code, 0);
             foreach (var c in KeyCodePairList.Where(p => p.Key == code).Select(p => p.Value))
@@ -67,14 +68,14 @@ namespace SendInputSharp
             return (SCANCODE)outKeyCode;
         }
 
-        private static VIRTUALKEYCODE ScanToVirtual(SCANCODE code)
+        private static Keys ScanToVirtual(SCANCODE code)
         {
             uint outKeyCode = MapVirtualKey((uint)code, 1);
             foreach (var c in KeyCodePairList.Where(p => p.Value == code).Select(p => p.Key))
             {
                 return c;
             }
-            return (VIRTUALKEYCODE)outKeyCode;
+            return (Keys)outKeyCode;
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace SendInputSharp
         /// <returns>
         /// キーボード入力ストリームへ挿入することができたイベントの数を返します。ほかのスレッドによって入力がすでにブロックされている場合、関数は 0 を返します。拡張エラー情報を取得するには、GetLastError 関数を使います。
         /// </returns>
-        public static uint SendKeybordInput(IEnumerable<KeyValuePair<VIRTUALKEYCODE, KEYEVENTFLAG>> keyEvents)
+        public static uint SendKeybordInput(IEnumerable<KeyValuePair<Keys, KEYEVENTFLAG>> keyEvents)
         {
             var inputs = keyEvents.Select((p) =>
             {
