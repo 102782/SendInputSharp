@@ -1,1 +1,0 @@
-WindowsInputSimulator‚ðŽg‚¢‚Ü‚µ‚å‚¤(http://inputsimulator.codeplex.com/)

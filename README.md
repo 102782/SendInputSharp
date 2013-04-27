@@ -1,0 +1,1 @@
+﻿WindowsInputSimulatorを使いましょう(http://inputsimulator.codeplex.com/)
