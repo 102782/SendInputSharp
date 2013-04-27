@@ -39,29 +39,29 @@ namespace SendInputSharp
             return 0 != (GetAsyncKeyState((int)vKey) & 0x8000);
         }
 
-        private static readonly List<KeyValuePair<Keys, SCANCODE>> KeyCodePairList = new List<KeyValuePair<Keys, SCANCODE>>
+        private static readonly List<Tuple<Keys, SCANCODE>> KeyCodePairList = new List<Tuple<Keys, SCANCODE>>
         {
-            new KeyValuePair<Keys, SCANCODE>(Keys.Up, SCANCODE.DIK_UP), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.Down, SCANCODE.DIK_DOWN), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.Left, SCANCODE.DIK_LEFT), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.Right, SCANCODE.DIK_RIGHT), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.Insert, SCANCODE.DIK_INSERT), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.Home, SCANCODE.DIK_HOME), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.Prior, SCANCODE.DIK_PRIOR),
-            new KeyValuePair<Keys, SCANCODE>(Keys.Delete, SCANCODE.DIK_DELETE), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.End, SCANCODE.DIK_END), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.Next, SCANCODE.DIK_NEXT),
-            new KeyValuePair<Keys, SCANCODE>(Keys.LMenu, SCANCODE.DIK_LMENU), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.RMenu, SCANCODE.DIK_RMENU), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.LControlKey, SCANCODE.DIK_LCONTROL), 
-            new KeyValuePair<Keys, SCANCODE>(Keys.RControlKey, SCANCODE.DIK_RCONTROL),
-            new KeyValuePair<Keys, SCANCODE>(Keys.Divide, SCANCODE.DIK_DIVIDE)
+            new Tuple<Keys, SCANCODE>(Keys.Up, SCANCODE.DIK_UP), 
+            new Tuple<Keys, SCANCODE>(Keys.Down, SCANCODE.DIK_DOWN), 
+            new Tuple<Keys, SCANCODE>(Keys.Left, SCANCODE.DIK_LEFT), 
+            new Tuple<Keys, SCANCODE>(Keys.Right, SCANCODE.DIK_RIGHT), 
+            new Tuple<Keys, SCANCODE>(Keys.Insert, SCANCODE.DIK_INSERT), 
+            new Tuple<Keys, SCANCODE>(Keys.Home, SCANCODE.DIK_HOME), 
+            new Tuple<Keys, SCANCODE>(Keys.Prior, SCANCODE.DIK_PRIOR),
+            new Tuple<Keys, SCANCODE>(Keys.Delete, SCANCODE.DIK_DELETE), 
+            new Tuple<Keys, SCANCODE>(Keys.End, SCANCODE.DIK_END), 
+            new Tuple<Keys, SCANCODE>(Keys.Next, SCANCODE.DIK_NEXT),
+            new Tuple<Keys, SCANCODE>(Keys.LMenu, SCANCODE.DIK_LMENU), 
+            new Tuple<Keys, SCANCODE>(Keys.RMenu, SCANCODE.DIK_RMENU), 
+            new Tuple<Keys, SCANCODE>(Keys.LControlKey, SCANCODE.DIK_LCONTROL), 
+            new Tuple<Keys, SCANCODE>(Keys.RControlKey, SCANCODE.DIK_RCONTROL),
+            new Tuple<Keys, SCANCODE>(Keys.Divide, SCANCODE.DIK_DIVIDE)
         };
 
         private static SCANCODE VirtualToScan(Keys code) 
         {
             uint outKeyCode = MapVirtualKey((uint)code, 0);
-            foreach (var c in KeyCodePairList.Where(p => p.Key == code).Select(p => p.Value))
+            foreach (var c in KeyCodePairList.Where(p => p.Item1 == code).Select(p => p.Item2))
             {
                 return c;
             }
@@ -71,7 +71,7 @@ namespace SendInputSharp
         private static Keys ScanToVirtual(SCANCODE code)
         {
             uint outKeyCode = MapVirtualKey((uint)code, 1);
-            foreach (var c in KeyCodePairList.Where(p => p.Value == code).Select(p => p.Key))
+            foreach (var c in KeyCodePairList.Where(p => p.Item2 == code).Select(p => p.Item1))
             {
                 return c;
             }
@@ -87,7 +87,7 @@ namespace SendInputSharp
         /// <returns>
         /// キーボード入力ストリームへ挿入することができたイベントの数を返します。ほかのスレッドによって入力がすでにブロックされている場合、関数は 0 を返します。拡張エラー情報を取得するには、GetLastError 関数を使います。
         /// </returns>
-        public static uint SendKeybordInput(IEnumerable<KeyValuePair<Keys, KEYEVENTFLAG>> keyEvents)
+        public static uint SendKeybordInput(IEnumerable<Tuple<Keys, KEYEVENTFLAG>> keyEvents)
         {
             var inputs = keyEvents.Select((p) =>
             {
@@ -96,9 +96,9 @@ namespace SendInputSharp
                     type = (int)INPUTTYPE.KEYBOARD,
                     U = new InputUnion(){ ki = new KEYBDINPUT() 
                     {
-                        wVk = (ushort)p.Key,
-                        wScan = (ushort)VirtualToScan(p.Key),
-                        dwFlags = (int)p.Value,
+                        wVk = (ushort)p.Item1,
+                        wScan = (ushort)VirtualToScan(p.Item1),
+                        dwFlags = (int)p.Item2,
                         time = 0,
                         dwExtraInfo = GetMessageExtraInfo()
                     }}
