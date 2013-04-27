@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace SendInputSharp
 {
-    public class SendInputSharp
+    public class ManagedSendInput
     {
         [DllImport("user32.dll")]
         private static extern uint SendInput(
