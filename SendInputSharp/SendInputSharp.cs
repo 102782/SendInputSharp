@@ -39,7 +39,7 @@ namespace SendInputSharp
             return 0 != (GetAsyncKeyState((int)vKey) & 0x8000);
         }
 
-        private static readonly List<Tuple<Keys, SCANCODE>> KeyCodePairList = new List<Tuple<Keys, SCANCODE>>
+        private static readonly Tuple<Keys, SCANCODE>[] KeyCodePairList = new []
         {
             new Tuple<Keys, SCANCODE>(Keys.Up, SCANCODE.Up), 
             new Tuple<Keys, SCANCODE>(Keys.Down, SCANCODE.Down), 
@@ -105,6 +105,17 @@ namespace SendInputSharp
                 };
             }).ToArray();
             return SendInput((uint)inputs.Length, inputs, INPUT.Size);
+        }
+
+        /// <summary>
+        /// イベントをキーボード入力ストリームに挿入します。イベントは仮想キーコードと入力イベントフラグのペアで指定します。
+        /// </summary>
+        /// <param name="virtualKey">仮想キーコード</param>
+        /// <param name="flag">入力イベントフラグ</param>
+        /// <returns>キーボード入力ストリームへ挿入することができたイベントの数を返します。ほかのスレッドによって入力がすでにブロックされている場合、関数は 0 を返します。拡張エラー情報を取得するには、GetLastError 関数を使います。</returns>
+        public static uint SendKeybordInput(Keys virtualKey, KEYEVENTFLAG eventFlag)
+        {
+            return SendKeybordInput(new[] { new Tuple<Keys, KEYEVENTFLAG>(virtualKey, eventFlag) });
         }
 
         /// <summary>
